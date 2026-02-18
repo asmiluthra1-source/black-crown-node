@@ -10,7 +10,8 @@ body {
     text-align: center;
     font-family: monospace;
     margin: 0;
-    padding-top: 60px;
+    padding-top: 80px;
+    overflow: hidden;
 }
 
 h1 {
@@ -18,51 +19,74 @@ h1 {
     font-size: 28px;
 }
 
-/* RUBY CONTAINER */
-.ruby-container {
+/* 3D SCENE */
+.scene {
+    width: 200px;
+    height: 200px;
+    margin: 80px auto;
     perspective: 1000px;
-    margin-top: 50px;
 }
 
-/* RUBY IMAGE */
-.jewel {
-    width: 260px;
-    cursor: pointer;
-    animation: rotate 10s linear infinite,
-               glow 2.5s ease-in-out infinite alternate,
-               float 4s ease-in-out infinite;
-    transition: transform 0.3s ease;
+.ruby {
+    width: 120px;
+    height: 120px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotate 8s linear infinite;
 }
 
-/* HOVER INTENSIFIES */
-.jewel:hover {
-    transform: scale(1.15);
+/* TOP FACET */
+.ruby:before {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at 30% 30%, #ff4d4d, #8b0000);
+    clip-path: polygon(50% 0%, 100% 35%, 85% 100%, 15% 100%, 0% 35%);
+    box-shadow: 0 0 40px red, 0 0 80px crimson;
+}
+
+/* BOTTOM FACET */
+.ruby:after {
+    content: "";
+    position: absolute;
+    top: 60px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle at 70% 70%, #ff1a1a, #550000);
+    clip-path: polygon(15% 0%, 85% 0%, 50% 100%);
+    box-shadow: 0 0 40px red;
 }
 
 /* ROTATION */
 @keyframes rotate {
-    0% { transform: rotateY(0deg); }
-    100% { transform: rotateY(360deg); }
+    0% { transform: rotateY(0deg) rotateX(15deg); }
+    100% { transform: rotateY(360deg) rotateX(15deg); }
 }
 
-/* GLOW EFFECT */
+/* GLOW PULSE */
+.scene {
+    animation: glow 3s ease-in-out infinite alternate;
+}
+
 @keyframes glow {
-    0% {
-        filter: drop-shadow(0 0 10px red);
-    }
-    100% {
-        filter: drop-shadow(0 0 60px crimson);
-    }
+    0% { filter: drop-shadow(0 0 20px red); }
+    100% { filter: drop-shadow(0 0 80px crimson); }
 }
 
-/* FLOAT EFFECT */
+/* FLOAT */
+.scene {
+    animation: glow 3s ease-in-out infinite alternate,
+               float 4s ease-in-out infinite;
+}
+
 @keyframes float {
-    0% { transform: translateY(0px) rotateY(0deg); }
-    50% { transform: translateY(-15px) rotateY(180deg); }
-    100% { transform: translateY(0px) rotateY(360deg); }
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
 }
 
-/* FORM (Hidden initially) */
+/* FORM */
 .form-container {
     margin-top: 40px;
     display: none;
@@ -74,7 +98,6 @@ input {
     background: black;
     border: 1px solid white;
     color: white;
-    font-size: 16px;
     text-align: center;
 }
 
@@ -99,8 +122,8 @@ button:hover {
 
 <h1>BLACK CROWN ARCHIVE NODE</h1>
 
-<div class="ruby-container">
-    <img src="ruby3.jpg" class="jewel" id="jewel">
+<div class="scene" id="rubyTrigger">
+    <div class="ruby"></div>
 </div>
 
 <div class="form-container" id="formContainer">
@@ -111,7 +134,7 @@ button:hover {
 </div>
 
 <script>
-document.getElementById("jewel").addEventListener("click", function() {
+document.getElementById("rubyTrigger").addEventListener("click", function() {
     document.getElementById("formContainer").style.display = "block";
 });
 </script>
