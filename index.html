@@ -1,107 +1,116 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Black Crown Archive</title>
+<meta charset="UTF-8">
+<title>Black Crown Archive Node</title>
 
 <style>
 body {
+    margin: 0;
     background: black;
     color: white;
-    text-align: center;
     font-family: monospace;
-    margin: 0;
-    padding-top: 80px;
-    overflow-x: hidden;
+    text-align: center;
+    overflow: hidden;
 }
 
 h1 {
+    margin-top: 40px;
     letter-spacing: 6px;
-    font-size: 26px;
 }
 
-/* ===== RUBY SCENE ===== */
-
+/* 3D Scene */
 .scene {
-    width: 200px;
-    height: 200px;
-    margin: 80px auto;
+    width: 300px;
+    height: 300px;
+    margin: 60px auto;
     perspective: 1000px;
-    cursor: pointer;
 }
 
 .ruby {
-    width: 140px;
-    height: 140px;
-    margin: auto;
+    width: 150px;
+    height: 150px;
     position: relative;
     transform-style: preserve-3d;
-    animation: rotate 8s linear infinite;
+    animation: spin 6s linear infinite;
+    cursor: pointer;
 }
 
-/* Ruby Shape */
-.ruby:before {
-    content: "";
+/* Ruby shape */
+.face {
     position: absolute;
-    width: 140px;
-    height: 140px;
-    background: radial-gradient(circle at 30% 30%, #ff4d4d, #8b0000);
-    clip-path: polygon(50% 0%, 100% 35%, 85% 100%, 15% 100%, 0% 35%);
-    box-shadow: 0 0 40px red, 0 0 100px crimson;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    opacity: 0.9;
 }
 
-.ruby:after {
-    content: "";
+/* Top facets */
+.face1 {
+    border-width: 0 75px 120px 75px;
+    border-color: transparent transparent crimson transparent;
+    transform: rotateY(0deg) translateZ(40px);
+}
+
+.face2 {
+    border-width: 0 75px 120px 75px;
+    border-color: transparent transparent darkred transparent;
+    transform: rotateY(90deg) translateZ(40px);
+}
+
+.face3 {
+    border-width: 0 75px 120px 75px;
+    border-color: transparent transparent #b00000 transparent;
+    transform: rotateY(180deg) translateZ(40px);
+}
+
+.face4 {
+    border-width: 0 75px 120px 75px;
+    border-color: transparent transparent #ff1a1a transparent;
+    transform: rotateY(270deg) translateZ(40px);
+}
+
+/* Bottom */
+.bottom {
     position: absolute;
-    top: 70px;
-    width: 140px;
-    height: 140px;
-    background: radial-gradient(circle at 70% 70%, #ff1a1a, #550000);
-    clip-path: polygon(15% 0%, 85% 0%, 50% 100%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 120px 75px 0 75px;
+    border-color: crimson transparent transparent transparent;
+    transform: rotateX(180deg) translateZ(40px);
 }
 
-/* Rotation */
-@keyframes rotate {
-    0% { transform: rotateY(0deg) rotateX(15deg); }
-    100% { transform: rotateY(360deg) rotateX(15deg); }
+/* Glow */
+.ruby {
+    filter: drop-shadow(0 0 25px red)
+            drop-shadow(0 0 40px crimson);
 }
 
-/* Glow Pulse */
-.scene {
-    animation: glow 3s ease-in-out infinite alternate,
-               float 4s ease-in-out infinite;
+@keyframes spin {
+    from { transform: rotateY(0deg) rotateX(15deg); }
+    to   { transform: rotateY(360deg) rotateX(15deg); }
 }
 
-@keyframes glow {
-    0% { filter: drop-shadow(0 0 20px red); }
-    100% { filter: drop-shadow(0 0 80px crimson); }
-}
-
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-15px); }
-    100% { transform: translateY(0px); }
-}
-
-/* ===== FORM ===== */
-
-.form-container {
-    margin-top: 40px;
+/* Form */
+#formContainer {
     display: none;
+    margin-top: 30px;
 }
 
 input {
-    padding: 12px;
-    width: 260px;
     background: black;
     border: 1px solid white;
+    padding: 10px;
+    width: 250px;
     color: white;
-    text-align: center;
     font-size: 16px;
+    text-align: center;
 }
 
 button {
     margin-top: 15px;
-    padding: 10px 30px;
+    padding: 10px 25px;
     background: black;
     border: 1px solid white;
     color: white;
@@ -110,15 +119,12 @@ button {
 
 button:hover {
     background: crimson;
-    border-color: crimson;
 }
-
-/* ===== OUTPUT ===== */
 
 #result {
     margin-top: 25px;
-    font-size: 18px;
     min-height: 30px;
+    color: #00ff88;
 }
 </style>
 </head>
@@ -127,21 +133,29 @@ button:hover {
 
 <h1>BLACK CROWN ARCHIVE NODE</h1>
 
-<div class="scene" id="rubyTrigger">
-    <div class="ruby"></div>
+<div class="scene">
+    <div class="ruby" id="rubyTrigger">
+        <div class="face face1"></div>
+        <div class="face face2"></div>
+        <div class="face face3"></div>
+        <div class="face face4"></div>
+        <div class="bottom"></div>
+    </div>
 </div>
 
-<div class="form-container" id="formContainer">
+<div id="formContainer">
     <p>Enter Authorized Team</p>
     <input type="text" id="teamInput" placeholder="Team Name">
     <br>
     <button onclick="unlock()">UNLOCK</button>
-    <p id="result"></p>
 </div>
+
+<p id="result"></p>
 
 <script>
 
-const morseForCortez = "--.- ..- .- .-. - . .-. / ... .... .. .--. -- . -. - / .- .-.. .-.. . --. . -..";
+const correctTeam = "cortez";
+const morseCode = "--.- ..- .- .-. - . .-. / ... .... .. .--. -- . -. -";
 
 document.getElementById("rubyTrigger").addEventListener("click", function() {
     document.getElementById("formContainer").style.display = "block";
@@ -152,28 +166,28 @@ function unlock() {
     const input = document.getElementById("teamInput").value.trim().toLowerCase();
     const result = document.getElementById("result");
 
-    result.innerText = "";
-    result.style.color = "lime";
+    result.innerHTML = "";
 
-    if (input === "cortez") {
-        typeWriter(morseForCortez, result);
+    if (input === correctTeam) {
+        typeWriter(morseCode, result);
     } else {
         result.style.color = "red";
-        result.innerText = "ACCESS DENIED";
+        result.innerHTML = "ACCESS DENIED";
     }
 }
 
-/* Typewriter Effect */
 function typeWriter(text, element) {
     let i = 0;
-    function typing() {
+    element.style.color = "#00ff88";
+
+    function type() {
         if (i < text.length) {
-            element.innerText += text.charAt(i);
+            element.innerHTML += text.charAt(i);
             i++;
-            setTimeout(typing, 40);
+            setTimeout(type, 35);
         }
     }
-    typing();
+    type();
 }
 
 </script>
