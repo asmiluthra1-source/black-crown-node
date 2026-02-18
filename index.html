@@ -1,122 +1,121 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Black Crown Archive</title>
+    <title>Black Crown Archive Node</title>
 
-<style>
-body {
-  background-color: black;
-  color: white;
-  text-align: center;
-  font-family: monospace;
-}
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            text-align: center;
+        }
 
-h1 {
-  margin-top: 80px;
-  letter-spacing: 4px;
-}
+        h1 {
+            letter-spacing: 6px;
+            margin-top: 80px;
+        }
 
-#gem {
-  width: 220px;
-  margin-top: 60px;
-  cursor: pointer;
-  animation: glow 1.5s infinite alternate;
-}
+        #gem {
+            width: 150px;
+            margin-top: 60px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 25px red);
+            transition: 0.3s;
+        }
 
-@keyframes glow {
-  from { filter: drop-shadow(0 0 15px crimson); }
-  to { filter: drop-shadow(0 0 40px red); }
-}
+        #gem:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 40px crimson);
+        }
 
-#authSection {
-  display: none;
-  margin-top: 40px;
-}
+        #authBox {
+            display: none;
+            margin-top: 40px;
+        }
 
-input {
-  padding: 10px;
-  font-size: 16px;
-  text-align: center;
-  background: black;
-  color: white;
-  border: 1px solid white;
-}
+        input {
+            padding: 12px;
+            width: 250px;
+            background: black;
+            border: 1px solid white;
+            color: white;
+            text-align: center;
+            font-family: monospace;
+        }
 
-button {
-  padding: 10px 20px;
-  margin-top: 10px;
-  cursor: pointer;
-  background: black;
-  color: white;
-  border: 1px solid white;
-}
+        button {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: black;
+            border: 1px solid white;
+            color: white;
+            cursor: pointer;
+            font-family: monospace;
+        }
 
-button:hover {
-  background: white;
-  color: black;
-}
+        button:hover {
+            background: crimson;
+            border: 1px solid crimson;
+        }
 
-#morse {
-  margin-top: 30px;
-  color: #00ffcc;
-  display: none;
-}
+        #message {
+            margin-top: 20px;
+            font-size: 14px;
+            color: red;
+        }
 
-#error {
-  margin-top: 20px;
-  color: red;
-  display: none;
-}
-</style>
+        #morseOutput {
+            margin-top: 30px;
+            color: lime;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>BLACK CROWN ARCHIVE NODE</h1>
+    <h1>BLACK CROWN ARCHIVE NODE</h1>
 
-<!-- WORKING RUBY IMAGE -->
-<img id="gem" src="ruby.jpg" onclick="revealAuth()">
+    <img id="gem" src="ruby.jpg" onclick="revealAuth()">
 
+    <div id="authBox">
+        <p>Enter Authorized Team</p>
+        <input type="text" id="teamName" placeholder="Team Name">
+        <br>
+        <button onclick="unlock()">UNLOCK</button>
+        <div id="message"></div>
+        <div id="morseOutput"></div>
+    </div>
 
-<div id="authSection">
-  <p>Enter Authorized Team</p>
-  <input type="text" id="teamInput" placeholder="Team Name">
-  <br>
-  <button onclick="checkAccess()">UNLOCK</button>
-</div>
+    <script>
 
-<div id="morse"></div>
-<div id="error">ACCESS DENIED</div>
+        function revealAuth() {
+            document.getElementById("authBox").style.display = "block";
+        }
 
-<script>
+        function unlock() {
+            var team = document.getElementById("teamName").value.trim().toLowerCase();
+            var message = document.getElementById("message");
+            var output = document.getElementById("morseOutput");
 
-const activeTeam = "CORTEZ";
+            message.innerHTML = "";
+            output.innerHTML = "";
 
-const morseCodes = {
-  "CORTEZ": "-.-. --- .-. - . --.. / .. -. .. - .. .- - . -.. / - .-- --- / -.- . -.-- / --- ...- . .-. .-. .. -.. .",
-  "VINAYAK": "...- .. -. .- -.-- .- -.- / ... -.-- -. -.-. / --- ...- . .-. .-. .. -.. .",
-  "VOLKOV": "...- --- .-.. -.- --- ...- / ..-. .- -- .. .-.. -.-- / .--- .- .. .-.. . -..",
-  "VANCE": "...- .- -. -.-. . / -... .- -. -.- .-. ..- .--. -"
-};
+            if (team === "rafael") {
+                output.innerHTML = "... - .- - . / .... .- ... / .--. .-. . ... ... . -.. / -.-. .... .- .-. --. . ...";
+            }
+            else if (team === "state") {
+                output.innerHTML = "... - .- - . / .... .- ... / .-- .. - .... .... . .-.. -.. / . ...- .. -.. . -. -.-. .";
+            }
+            else {
+                message.innerHTML = "ACCESS DENIED";
+            }
+        }
 
-function revealAuth() {
-  document.getElementById("authSection").style.display = "block";
-}
-
-function checkAccess() {
-  const input = document.getElementById("teamInput").value.toUpperCase();
-
-  if(input === activeTeam) {
-    document.getElementById("error").style.display = "none";
-    document.getElementById("morse").style.display = "block";
-    document.getElementById("morse").innerText = morseCodes[input];
-  } else {
-    document.getElementById("morse").style.display = "none";
-    document.getElementById("error").style.display = "block";
-  }
-}
-
-</script>
+    </script>
 
 </body>
 </html>
