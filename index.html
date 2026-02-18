@@ -9,29 +9,32 @@ body {
   color: white;
   text-align: center;
   font-family: monospace;
-  overflow: hidden;
 }
 
 h1 {
-  margin-top: 40px;
+  margin-top: 60px;
   letter-spacing: 3px;
 }
 
 #gem {
-  width: 220px;
-  margin-top: 30px;
+  width: 250px;
+  margin-top: 40px;
   cursor: pointer;
   animation: glow 1.5s infinite alternate;
 }
 
 @keyframes glow {
-  from { filter: drop-shadow(0 0 10px red); }
-  to { filter: drop-shadow(0 0 30px crimson); }
+  from { filter: drop-shadow(0 0 10px crimson); }
+  to { filter: drop-shadow(0 0 30px red); }
+}
+
+#authSection {
+  display: none;
+  margin-top: 30px;
 }
 
 input {
   padding: 10px;
-  margin-top: 20px;
   font-size: 16px;
   text-align: center;
   background: black;
@@ -70,15 +73,16 @@ button:hover {
 <body>
 
 <h1>BLACK CROWN ARCHIVE NODE</h1>
-<p>Tap the Jewel. Enter Authorization.</p>
+<p>Tap the Jewel to Begin</p>
 
-<img id="gem" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Ruby_gemstone.jpg/640px-Ruby_gemstone.jpg">
+<img id="gem" src="https://images.unsplash.com/photo-1616627454902-7b4b1f9a7d8b?auto=format&fit=crop&w=400&q=80" onclick="revealAuth()">
 
-<br>
-
-<input type="text" id="teamInput" placeholder="Team Name">
-<br>
-<button onclick="checkAccess()">UNLOCK</button>
+<div id="authSection">
+  <p>Enter Authorized Team</p>
+  <input type="text" id="teamInput" placeholder="Team Name">
+  <br>
+  <button onclick="checkAccess()">UNLOCK</button>
+</div>
 
 <div id="morse"></div>
 <div id="error">ACCESS DENIED</div>
@@ -94,6 +98,10 @@ const morseCodes = {
   "VOLKOV": "...- --- .-.. -.- --- ...- / ..-. .- -- .. .-.. -.-- / .--- .- .. .-.. . -..",
   "VANCE": "...- .- -. -.-. . / -... .- -. -.- .-. ..- .--. -"
 };
+
+function revealAuth() {
+  document.getElementById("authSection").style.display = "block";
+}
 
 function checkAccess() {
   const input = document.getElementById("teamInput").value.toUpperCase();
