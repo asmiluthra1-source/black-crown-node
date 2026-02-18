@@ -1,94 +1,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Black Crown Archive</title>
-    <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: monospace;
-            text-align: center;
-            margin-top: 100px;
-        }
+<title>Black Crown Archive</title>
 
-        h1 {
-            letter-spacing: 6px;
-        }
+<style>
+body {
+    background: black;
+    color: white;
+    text-align: center;
+    font-family: monospace;
+    margin: 0;
+    padding-top: 60px;
+}
 
-        #ruby {
-            width: 150px;
-            cursor: pointer;
-            animation: glow 2s infinite alternate;
-        }
+h1 {
+    letter-spacing: 6px;
+    font-size: 28px;
+}
 
-        @keyframes glow {
-            from {
-                filter: drop-shadow(0 0 5px red);
-            }
-            to {
-                filter: drop-shadow(0 0 25px red);
-            }
-        }
+/* RUBY CONTAINER */
+.ruby-container {
+    perspective: 1000px;
+    margin-top: 50px;
+}
 
-        #loginBox {
-            display: none;
-            margin-top: 30px;
-        }
+/* RUBY IMAGE */
+.jewel {
+    width: 260px;
+    cursor: pointer;
+    animation: rotate 10s linear infinite,
+               glow 2.5s ease-in-out infinite alternate,
+               float 4s ease-in-out infinite;
+    transition: transform 0.3s ease;
+}
 
-        input {
-            padding: 10px;
-            width: 250px;
-            background: black;
-            border: 1px solid white;
-            color: white;
-        }
+/* HOVER INTENSIFIES */
+.jewel:hover {
+    transform: scale(1.15);
+}
 
-        button {
-            padding: 10px 20px;
-            background: black;
-            border: 1px solid white;
-            color: white;
-            cursor: pointer;
-        }
+/* ROTATION */
+@keyframes rotate {
+    0% { transform: rotateY(0deg); }
+    100% { transform: rotateY(360deg); }
+}
 
-        .denied {
-            color: red;
-            margin-top: 10px;
-        }
-    </style>
+/* GLOW EFFECT */
+@keyframes glow {
+    0% {
+        filter: drop-shadow(0 0 10px red);
+    }
+    100% {
+        filter: drop-shadow(0 0 60px crimson);
+    }
+}
+
+/* FLOAT EFFECT */
+@keyframes float {
+    0% { transform: translateY(0px) rotateY(0deg); }
+    50% { transform: translateY(-15px) rotateY(180deg); }
+    100% { transform: translateY(0px) rotateY(360deg); }
+}
+
+/* FORM (Hidden initially) */
+.form-container {
+    margin-top: 40px;
+    display: none;
+}
+
+input {
+    padding: 10px;
+    width: 250px;
+    background: black;
+    border: 1px solid white;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 30px;
+    background: black;
+    border: 1px solid white;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: crimson;
+    border-color: crimson;
+}
+
+</style>
 </head>
 
 <body>
 
 <h1>BLACK CROWN ARCHIVE NODE</h1>
 
-<img id="ruby" src="ruby3.jpg" onclick="revealLogin()">
+<div class="ruby-container">
+    <img src="ruby.jpg" class="jewel" id="jewel">
+</div>
 
-<div id="loginBox">
+<div class="form-container" id="formContainer">
     <p>Enter Authorized Team</p>
-    <input type="text" id="teamName" placeholder="Team Name">
-    <br><br>
-    <button onclick="unlock()">UNLOCK</button>
-    <p id="message"></p>
+    <input type="text" placeholder="Team Name">
+    <br>
+    <button>UNLOCK</button>
 </div>
 
 <script>
-    function revealLogin() {
-        document.getElementById("loginBox").style.display = "block";
-    }
-
-    function unlock() {
-        const name = document.getElementById("teamName").value.toLowerCase();
-        const message = document.getElementById("message");
-
-        if(name === "test") {
-            message.style.color = "lime";
-            message.innerText = "ACCESS GRANTED";
-        } else {
-            message.style.color = "red";
-            message.innerText = "ACCESS DENIED";
-        }
-    }
+document.getElementById("jewel").addEventListener("click", function() {
+    document.getElementById("formContainer").style.display = "block";
+});
 </script>
 
 </body>
