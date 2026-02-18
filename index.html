@@ -1,121 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Black Crown Archive Node</title>
-
+    <title>Black Crown Archive</title>
     <style>
         body {
-            margin: 0;
             background-color: black;
             color: white;
             font-family: monospace;
             text-align: center;
+            margin-top: 100px;
         }
 
         h1 {
             letter-spacing: 6px;
-            margin-top: 80px;
         }
 
-        #gem {
+        #ruby {
             width: 150px;
-            margin-top: 60px;
             cursor: pointer;
-            filter: drop-shadow(0 0 25px red);
-            transition: 0.3s;
+            animation: glow 2s infinite alternate;
         }
 
-        #gem:hover {
-            transform: scale(1.1);
-            filter: drop-shadow(0 0 40px crimson);
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 5px red);
+            }
+            to {
+                filter: drop-shadow(0 0 25px red);
+            }
         }
 
-        #authBox {
+        #loginBox {
             display: none;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         input {
-            padding: 12px;
+            padding: 10px;
             width: 250px;
             background: black;
             border: 1px solid white;
             color: white;
-            text-align: center;
-            font-family: monospace;
         }
 
         button {
-            margin-top: 15px;
-            padding: 10px 25px;
+            padding: 10px 20px;
             background: black;
             border: 1px solid white;
             color: white;
             cursor: pointer;
-            font-family: monospace;
         }
 
-        button:hover {
-            background: crimson;
-            border: 1px solid crimson;
-        }
-
-        #message {
-            margin-top: 20px;
-            font-size: 14px;
+        .denied {
             color: red;
-        }
-
-        #morseOutput {
-            margin-top: 30px;
-            color: lime;
-            font-size: 14px;
-            white-space: pre-wrap;
+            margin-top: 10px;
         }
     </style>
 </head>
 
 <body>
 
-    <h1>BLACK CROWN ARCHIVE NODE</h1>
+<h1>BLACK CROWN ARCHIVE NODE</h1>
 
-    <img id="gem" src="ruby1.jpg" onclick="revealAuth()">
+<img id="ruby" src="ruby.jpg" onclick="revealLogin()">
 
-    <div id="authBox">
-        <p>Enter Authorized Team</p>
-        <input type="text" id="teamName" placeholder="Team Name">
-        <br>
-        <button onclick="unlock()">UNLOCK</button>
-        <div id="message"></div>
-        <div id="morseOutput"></div>
-    </div>
+<div id="loginBox">
+    <p>Enter Authorized Team</p>
+    <input type="text" id="teamName" placeholder="Team Name">
+    <br><br>
+    <button onclick="unlock()">UNLOCK</button>
+    <p id="message"></p>
+</div>
 
-    <script>
+<script>
+    function revealLogin() {
+        document.getElementById("loginBox").style.display = "block";
+    }
 
-        function revealAuth() {
-            document.getElementById("authBox").style.display = "block";
+    function unlock() {
+        const name = document.getElementById("teamName").value.toLowerCase();
+        const message = document.getElementById("message");
+
+        if(name === "test") {
+            message.style.color = "lime";
+            message.innerText = "ACCESS GRANTED";
+        } else {
+            message.style.color = "red";
+            message.innerText = "ACCESS DENIED";
         }
-
-        function unlock() {
-            var team = document.getElementById("teamName").value.trim().toLowerCase();
-            var message = document.getElementById("message");
-            var output = document.getElementById("morseOutput");
-
-            message.innerHTML = "";
-            output.innerHTML = "";
-
-            if (team === "rafael") {
-                output.innerHTML = "... - .- - . / .... .- ... / .--. .-. . ... ... . -.. / -.-. .... .- .-. --. . ...";
-            }
-            else if (team === "state") {
-                output.innerHTML = "... - .- - . / .... .- ... / .-- .. - .... .... . .-.. -.. / . ...- .. -.. . -. -.-. .";
-            }
-            else {
-                message.innerHTML = "ACCESS DENIED";
-            }
-        }
-
-    </script>
+    }
+</script>
 
 </body>
 </html>
