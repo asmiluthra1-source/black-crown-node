@@ -11,73 +11,69 @@ body {
     font-family: monospace;
     margin: 0;
     padding-top: 80px;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 h1 {
     letter-spacing: 6px;
-    font-size: 28px;
+    font-size: 26px;
 }
 
-/* 3D SCENE */
+/* ===== RUBY SCENE ===== */
+
 .scene {
     width: 200px;
     height: 200px;
     margin: 80px auto;
     perspective: 1000px;
+    cursor: pointer;
 }
 
 .ruby {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
+    margin: auto;
     position: relative;
     transform-style: preserve-3d;
     animation: rotate 8s linear infinite;
 }
 
-/* TOP FACET */
+/* Ruby Shape */
 .ruby:before {
     content: "";
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     background: radial-gradient(circle at 30% 30%, #ff4d4d, #8b0000);
     clip-path: polygon(50% 0%, 100% 35%, 85% 100%, 15% 100%, 0% 35%);
-    box-shadow: 0 0 40px red, 0 0 80px crimson;
+    box-shadow: 0 0 40px red, 0 0 100px crimson;
 }
 
-/* BOTTOM FACET */
 .ruby:after {
     content: "";
     position: absolute;
-    top: 60px;
-    width: 120px;
-    height: 120px;
+    top: 70px;
+    width: 140px;
+    height: 140px;
     background: radial-gradient(circle at 70% 70%, #ff1a1a, #550000);
     clip-path: polygon(15% 0%, 85% 0%, 50% 100%);
-    box-shadow: 0 0 40px red;
 }
 
-/* ROTATION */
+/* Rotation */
 @keyframes rotate {
     0% { transform: rotateY(0deg) rotateX(15deg); }
     100% { transform: rotateY(360deg) rotateX(15deg); }
 }
 
-/* GLOW PULSE */
+/* Glow Pulse */
 .scene {
-    animation: glow 3s ease-in-out infinite alternate;
+    animation: glow 3s ease-in-out infinite alternate,
+               float 4s ease-in-out infinite;
 }
 
 @keyframes glow {
     0% { filter: drop-shadow(0 0 20px red); }
     100% { filter: drop-shadow(0 0 80px crimson); }
-}
-
-/* FLOAT */
-.scene {
-    animation: glow 3s ease-in-out infinite alternate,
-               float 4s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -86,19 +82,21 @@ h1 {
     100% { transform: translateY(0px); }
 }
 
-/* FORM */
+/* ===== FORM ===== */
+
 .form-container {
     margin-top: 40px;
     display: none;
 }
 
 input {
-    padding: 10px;
-    width: 250px;
+    padding: 12px;
+    width: 260px;
     background: black;
     border: 1px solid white;
     color: white;
     text-align: center;
+    font-size: 16px;
 }
 
 button {
@@ -115,6 +113,13 @@ button:hover {
     border-color: crimson;
 }
 
+/* ===== OUTPUT ===== */
+
+#result {
+    margin-top: 25px;
+    font-size: 18px;
+    min-height: 30px;
+}
 </style>
 </head>
 
@@ -128,15 +133,49 @@ button:hover {
 
 <div class="form-container" id="formContainer">
     <p>Enter Authorized Team</p>
-    <input type="text" placeholder="Team Name">
+    <input type="text" id="teamInput" placeholder="Team Name">
     <br>
-    <button>UNLOCK</button>
+    <button onclick="unlock()">UNLOCK</button>
+    <p id="result"></p>
 </div>
 
 <script>
+
+const morseForCortez = "--.- ..- .- .-. - . .-. / ... .... .. .--. -- . -. - / .- .-.. .-.. . --. . -..";
+
 document.getElementById("rubyTrigger").addEventListener("click", function() {
     document.getElementById("formContainer").style.display = "block";
 });
+
+function unlock() {
+
+    const input = document.getElementById("teamInput").value.trim().toLowerCase();
+    const result = document.getElementById("result");
+
+    result.innerText = "";
+    result.style.color = "lime";
+
+    if (input === "cortez") {
+        typeWriter(morseForCortez, result);
+    } else {
+        result.style.color = "red";
+        result.innerText = "ACCESS DENIED";
+    }
+}
+
+/* Typewriter Effect */
+function typeWriter(text, element) {
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            element.innerText += text.charAt(i);
+            i++;
+            setTimeout(typing, 40);
+        }
+    }
+    typing();
+}
+
 </script>
 
 </body>
